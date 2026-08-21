@@ -1,0 +1,11 @@
+import 'dotenv/config';
+import mongoose from 'mongoose';
+import { connectDatabase } from '../config/db.js';
+import User from '../models/User.js';
+if (!process.env.OWNER_EMAIL || !process.env.OWNER_PASSWORD) throw new Error('Configura OWNER_EMAIL y OWNER_PASSWORD en .env');
+if (process.env.OWNER_PASSWORD.length < 10) throw new Error('OWNER_PASSWORD debe tener al menos 10 caracteres');
+await connectDatabase();
+const passwordHash = await User.hashPassword(process.env.OWNER_PASSWORD);
+await User.findOneAndUpdate({ email: process.env.OWNER_EMAIL.toLowerCase() }, { name: 'Jorge Ramos', email: process.env.OWNER_EMAIL.toLowerCase(), passwordHash, role: 'owner', active: true }, { upsert: true, new: true });
+console.log(`Owner creado/actualizado: ${process.env.OWNER_EMAIL}`);
+await mongoose.disconnect();

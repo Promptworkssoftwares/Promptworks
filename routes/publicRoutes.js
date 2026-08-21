@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
+import { applicationDetails, bootstrap } from '../controllers/publicController.js';
+import { createContact } from '../controllers/contactController.js';
+import { upload } from '../middleware/upload.js';
+import { asyncHandler } from '../utils/api.js';
+const router = Router();
+router.get('/bootstrap', asyncHandler(bootstrap));
+router.get('/applications/:slug', asyncHandler(applicationDetails));
+router.post('/contact', rateLimit({ windowMs: 60 * 60 * 1000, limit: 8, standardHeaders: true, legacyHeaders: false }), upload.single('attachment'), asyncHandler(createContact));
+export default router;

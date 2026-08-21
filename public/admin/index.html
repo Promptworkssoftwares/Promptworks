@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PromptWorks CMS</title><link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/css/styles.css"><link rel="stylesheet" href="/css/admin.css"><link rel="stylesheet" href="/css/admin-cms.css"><script defer src="/js/admin.js"></script></head>
+<body class="admin-shell">
+  <aside class="sidebar">
+    <a class="brand" href="/"><span>PW</span><span class="brand-copy"><strong>PromptWorks</strong><small>CONTROL CENTER</small></span></a>
+    <p class="sidebar-label">WORKSPACE</p>
+    <nav>
+      <button class="active" data-view="dashboard"><i>01</i> Resumen</button>
+      <button data-view="frontpage"><i>02</i> Diseñar Front Page</button>
+      <button data-view="media"><i>03</i> Media Manager</button>
+      <button data-view="applications"><i>04</i> Software / Portafolio</button>
+      <button data-view="categories"><i>05</i> Categorías</button>
+      <button data-view="services"><i>06</i> Servicios</button>
+      <button data-view="contacts"><i>07</i> Pedidos / Solicitudes</button>
+      <button data-view="testimonials"><i>08</i> Testimonios</button>
+      <button data-view="settings"><i>09</i> Configuración</button>
+    </nav>
+    <div class="sidebar-bottom"><small id="userName">Cargando…</small><button id="logoutButton">Cerrar sesión</button></div>
+  </aside>
+  <main class="admin-main">
+    <header><button class="sidebar-toggle" id="sidebarToggle">☰</button><div><p class="eyebrow">PromptWorks / CMS</p><h1 id="viewTitle">Resumen</h1></div><div class="header-actions"><span class="system-live"><i></i> MongoDB Live</span><a class="button small ghost" href="/" target="_blank">Ver sitio ↗</a></div></header>
+    <section id="content"><div class="empty-state">Cargando panel…</div></section>
+  </main>
+  <dialog id="editor"><form method="dialog" id="editorForm"><header><div><p class="eyebrow">Editor</p><h2 id="editorTitle">Nuevo registro</h2></div><button value="cancel" class="dialog-close" aria-label="Cerrar">×</button></header><div id="editorFields"></div><footer><button value="cancel" class="button ghost">Cancelar</button><button type="submit" value="default" class="button" id="saveButton">Guardar</button></footer><p id="editorStatus" class="form-status"></p></form></dialog>
+  <div class="toast" id="toast"></div>
+</body></html>

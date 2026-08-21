@@ -1,0 +1,25 @@
+import { Router } from 'express';
+import { requireAuth, requireOwner } from '../middleware/auth.js';
+import { upload } from '../middleware/upload.js';
+import { createResource, dashboard, deleteMedia, deleteResource, getSettings, listContacts, listMedia, listResource, saveSettings, updateContact, updateMedia, updateResource, uploadMedia } from '../controllers/adminController.js';
+import { asyncHandler, ok } from '../utils/api.js';
+const router = Router();
+router.use(requireAuth);
+router.get('/dashboard', asyncHandler(dashboard));
+router.get('/contacts', asyncHandler(listContacts));
+router.patch('/contacts/:id', asyncHandler(updateContact));
+router.get('/settings', asyncHandler(getSettings));
+router.put('/settings', requireOwner, asyncHandler(saveSettings));
+router.get('/media', asyncHandler(listMedia));
+router.post('/media', upload.single('file'), asyncHandler(uploadMedia));
+router.patch('/media/:id', asyncHandler(updateMedia));
+router.delete('/media/:id', requireOwner, asyncHandler(deleteMedia));
+router.post('/uploads', upload.single('file'), (req, res) => {
+  if (!req.file) return res.status(422).json({ success: false, message: 'Selecciona un archivo' });
+  return ok(res, { url: `/uploads/${req.file.filename}` }, 'Archivo subido', 201);
+});
+router.get('/:resource', asyncHandler(listResource));
+router.post('/:resource', asyncHandler(createResource));
+router.put('/:resource/:id', asyncHandler(updateResource));
+router.delete('/:resource/:id', requireOwner, asyncHandler(deleteResource));
+export default router;

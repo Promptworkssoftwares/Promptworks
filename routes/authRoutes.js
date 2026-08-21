@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
+import { login, logout, me } from '../controllers/authController.js';
+import { requireAuth } from '../middleware/auth.js';
+import { asyncHandler } from '../utils/api.js';
+const router = Router();
+router.post('/login', rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: true, legacyHeaders: false }), asyncHandler(login));
+router.post('/logout', logout);
+router.get('/me', requireAuth, me);
+export default router;
