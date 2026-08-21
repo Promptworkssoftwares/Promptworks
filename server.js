@@ -14,6 +14,7 @@ import { errorHandler, notFound } from './middleware/errors.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) { console.error('JWT_SECRET debe tener al menos 32 caracteres.'); process.exit(1); }
 const app = express();
+app.set('trust proxy', 1);
 app.disable('x-powered-by');
 app.use(helmet({ contentSecurityPolicy: { directives: { defaultSrc: ["'self'"], styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'], fontSrc: ["'self'", 'https://fonts.gstatic.com'], imgSrc: ["'self'", 'data:', 'https:'], scriptSrc: ["'self'"], mediaSrc: ["'self'", 'https:'] } } }));
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || `http://localhost:${process.env.PORT || 3000}`, credentials: true }));
