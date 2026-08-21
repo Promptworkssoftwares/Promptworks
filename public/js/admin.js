@@ -15,7 +15,8 @@ let currentView='dashboard', records=[], categories=[], editing=null, settingsCa
 
 async function api(url, options={}) { const response=await fetch(url,{credentials:'same-origin',...options,headers:{...(options.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(options.headers||{})}}); if(response.status===401){location.href='/admin/login.html';throw new Error('Sesión vencida');} const result=await response.json(); if(!response.ok) throw new Error(result.message); return result.data; }
 function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500)}
-async function init(){try{const user=await api('/api/auth/me');$('#userName').textContent=`${user.name} · ${user.role}`;await showView('dashboard')}catch{}}
+function applyAdminBrand(settings){const brand=settings.brand||{};const mark=document.querySelector('.sidebar .brand-mark');if(brand.logoUrl){const image=document.createElement('img');image.src=brand.logoUrl;image.alt=brand.name||'PromptWorks';mark.replaceChildren(image)}if(brand.name)document.querySelector('.sidebar .brand-copy strong').textContent=brand.name;if(brand.tagline)document.querySelector('.sidebar .brand-copy small').textContent=brand.tagline}
+async function init(){try{const user=await api('/api/auth/me');$('#userName').textContent=`${user.name} · ${user.role}`;applyAdminBrand(await api('/api/admin/settings'));await showView('dashboard')}catch{}}
 document.querySelectorAll('.sidebar nav button').forEach(button=>button.addEventListener('click',()=>showView(button.dataset.view)));
 $('#sidebarToggle').addEventListener('click',()=>document.querySelector('.sidebar').classList.toggle('open'));
 $('#logoutButton').addEventListener('click',async()=>{await api('/api/auth/logout',{method:'POST'});location.href='/admin/login.html'});
